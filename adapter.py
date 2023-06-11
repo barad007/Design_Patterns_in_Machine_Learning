@@ -1,7 +1,7 @@
 import os
-import json
 from typing import Dict, List
 import pathlib
+
 
 class Target:
     """
@@ -17,6 +17,7 @@ class Target:
             ]
         }
         return json_samples
+
 
 # Adaptee
 class ImageFileReader:
@@ -62,9 +63,3 @@ class Adapter(Target):
 def use_adapter(target: Target) -> Dict[str, List[Dict[str, str]]]:
     json_samples = target.get_json_samples()
     return json_samples
-
-
-
-adapter = Adapter(ImageFileReader("data/test/"))
-jsonx = use_adapter(adapter)
-
