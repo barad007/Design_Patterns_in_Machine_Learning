@@ -34,9 +34,11 @@ if __name__ == "__main__":
     train_transform = TrainTransforms()
     valid_transform = ValidationTransforms()
 
+    # Create a dataset using Factory Method (Creational Design Patterns)
     train_dataset = get_dataset(FolderDatasetCreator(data=train_path, transform=train_transform))
     print(f"train_dataset: {len(train_dataset)} images.")
 
+    # Create a dataset using Factory Method (Creational Design Patterns)
     validation_dataset = get_dataset(CustomImageDatasetCreator(data=validation_data, transform=valid_transform))
     print(f"validation_dataset: {len(validation_dataset)} images.")
 
@@ -66,6 +68,7 @@ if __name__ == "__main__":
     nn.init.xavier_uniform_(model.fc.weight)
     model.to(device)
 
+    # Memento (Behavioral Design Pattern)
     originator = Originator(model)
     caretaker = Caretaker(originator)
 
@@ -89,14 +92,17 @@ if __name__ == "__main__":
 
         # save results
         if f1 > best_f1:
+            # saving the best model using Memento (Behavioral Design Pattern)
             caretaker.save_state()
             print(f"Improvement at epoch {epoch}, f1 was improved from {best_f1} to {f1}.\n")
             best_f1 = f1
 
-    # restoring best model
+    # restoring the best model using Memento (Behavioral Design Pattern)
     caretaker.restore_state()
+
     model.eval().to(device)
 
+    # Adapter (Structural Design Pattern)
     adapter = Adapter(ImageFileReader(path_test_files))
     json_samples = use_adapter(adapter)
 
@@ -137,9 +143,5 @@ if __name__ == "__main__":
     pvals = [round(i, 3) if i is not None else None for i in pvals]
     pcls = np.concatenate(np.asarray(pcls, dtype=object)).tolist()
 
-    print(id_list)
-    print(path_list)
-    print(pvals)
-    print(pcls)
 
     save_results(test_results, id_list, path_list, pvals, pcls)

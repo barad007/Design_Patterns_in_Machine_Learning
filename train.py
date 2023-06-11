@@ -4,7 +4,9 @@ import numpy as np
 from sklearn.metrics import f1_score, confusion_matrix, classification_report
 from decorator import decorator_classification_report, decorator_training_results
 
-cls = {"cat" : 0, "dog" : 1}
+
+cls = dict(cat=0, dog=1)
+
 
 class Trainer:
     def __init__(self, model: torch.nn.Module):
@@ -96,8 +98,6 @@ class Trainer:
         report = classification_report(gt, preds, target_names=list(cls.keys()), output_dict=True)
         report_p = classification_report(gt, preds, target_names=list(cls.keys()))
         return loss_monitor.mean(), accuracy_monitor.mean(), f1_weighted, f1_macro, report, report_p, cm
-
-
 
 
 class AverageMeter(object):
